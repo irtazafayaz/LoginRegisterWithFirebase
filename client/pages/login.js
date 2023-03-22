@@ -1,7 +1,12 @@
+import { async } from "@firebase/util";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import LoginRegisterForm from "../components/LoginRegisterForm";
-import { Context } from "../context";
+import { auth } from "../firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 const Login = () => {
   const router = useRouter();
@@ -11,8 +16,20 @@ const Login = () => {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
 
-  const login = () => {};
-  const register = () => {};
+  const login = async () => {
+    await signInWithEmailAndPassword(auth, loginEmail, loginPassword)
+      .then((user) => {
+        console.log(user);
+      })
+      .catch((e) => console.log(e));
+  };
+  const register = async () => {
+    await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
+      .then((user) => {
+        console.log(user);
+      })
+      .catch((e) => console.log(e));
+  };
 
   return (
     <div className="container">
