@@ -7,6 +7,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const router = useRouter();
@@ -21,20 +22,21 @@ const Login = () => {
       .then((user) => {
         console.log(user);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => toast.error(e.message));
   };
   const register = async () => {
     await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
       .then((user) => {
         console.log(user);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => toast.error(e.message));
   };
 
   return (
     <div className="container">
       <h2 className="text-center pt-4 display-4">Login / Register</h2>
       <div className="row">
+        
         <LoginRegisterForm
           email={loginEmail}
           setEmail={setLoginEmail}

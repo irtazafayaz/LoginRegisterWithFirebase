@@ -1,32 +1,30 @@
+// import
 import { createContext, useReducer } from "react";
 
-const initialState = {
-  user: null,
-};
-
-const Context = createContext({});
-
+// reducer
 const reducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
-      return {
-        ...state,
-        user: action.payload,
-      };
+      return { ...state, user: action.payload };
     case "LOGOUT":
-      return {
-        ...state,
-        user: null,
-      };
+      return { ...state, user: null };
     default:
       return state;
   }
 };
 
-const Provider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const value = { state, dispatch };
+// initial state
+const intialState = {
+  user: null,
+};
 
+// create context
+const Context = createContext({});
+
+// context provider
+const Provider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, intialState);
+  const value = { state, dispatch };
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
