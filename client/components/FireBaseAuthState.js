@@ -1,26 +1,29 @@
-import { onAuthStateChanged } from "firebase/auth";
+import { onIdTokenChanged } from "firebase/auth";
 import React, { useContext, useEffect } from "react";
-import { Context } from "../context";
 import { auth } from "../firebase";
+import { Context } from "../context";
 
-const FireBaseAuthState = ({children}) => {
-  const { dispatch } = useContext(Context);
+/**
+ * create a component that will keep track of user's auth state
+ * then wrap _app.js so that entire app knows if the user is logged in or not
+ */
 
+const FirebaseAuthState = ({ children }) => {
+  const { state, dispatch } = useContext(Context);
   useEffect(() => {
-    return onAuthStateChanged(auth, async (user) => {
+    return onIdTokenChanged(auth, async (user) => {
       if (!user) {
         dispatch({
           type: "LOGOUT",
         });
       } else {
-        dispatch({
-          type: "LOGIN",
-          payload: user,
-        });
+        const token = await user.getIdTokenResult();
+        console.log("TOKEN",token);
       }
     });
   }, []);
-  return <>{children}</>
+
+  return <>{children}</>;
 };
 
-export default FireBaseAuthState;
+export default FirebaseAuthState;
