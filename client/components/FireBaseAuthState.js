@@ -2,6 +2,7 @@ import { onIdTokenChanged } from "firebase/auth";
 import React, { useContext, useEffect } from "react";
 import { auth } from "../firebase";
 import { Context } from "../context";
+import { axiosAuth } from "../actions/axios";
 
 /**
  * create a component that will keep track of user's auth state
@@ -17,8 +18,14 @@ const FirebaseAuthState = ({ children }) => {
           type: "LOGOUT",
         });
       } else {
-        const token = await user.getIdTokenResult();
-        console.log("TOKEN",token);
+        const { token } = await user.getIdTokenResult();
+        console.log("TOKEN", token);
+        axiosAuth.post("/current-user", {}).then((res) => {
+          dispatch({
+            type: "LOGIN",
+            payload: res.data,
+          });
+        });
       }
     });
   }, []);

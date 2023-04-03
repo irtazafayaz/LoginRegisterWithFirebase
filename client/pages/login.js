@@ -24,14 +24,14 @@ const Login = () => {
   const login = async () => {
     await signInWithEmailAndPassword(auth, loginEmail, loginPassword)
       .then((user) => {
-        console.log(user);
+        router.push('/');
       })
       .catch((e) => toast.error(e.message));
   };
   const register = async () => {
     await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
       .then((user) => {
-        console.log(user);
+        router.push('/');
       })
       .catch((e) => toast.error(e.message));
   };
@@ -45,7 +45,7 @@ const Login = () => {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-        console.log("USER GOOGLE",user);
+        router.push('/');
       })
       .catch((e) => {
         toast.error(e);
