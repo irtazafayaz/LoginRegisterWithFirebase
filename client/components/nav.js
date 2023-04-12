@@ -25,10 +25,9 @@ const Nav = () => {
         Home
       </Link>
       {user ? (
-        <Link className="nav-link" href="/logout" onClick={handleLogoutButton}>
-          {" "}
+        <a onClick={handleLogoutButton} className="nav-link">
           Logout
-        </Link>
+        </a>
       ) : (
         <Link className="nav-link" href="/login">
           {" "}

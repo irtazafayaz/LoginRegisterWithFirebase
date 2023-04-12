@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { auth } from "../firebase";
 import { Context } from "../context";
 import { axiosAuth } from "../actions/axios";
+import { destroyCookie, setCookie } from "nookies";
 
 /**
  * create a component that will keep track of user's auth state
@@ -17,9 +18,23 @@ const FirebaseAuthState = ({ children }) => {
         dispatch({
           type: "LOGOUT",
         });
+
+        destroyCookie(null, "token", {
+          path: "/booking",
+        });
+        destroyCookie(null, "token", {
+          path: "/",
+        });
+        setCookie(null, "token", "", { path: "/booking" });
+        console.log(
+          "/client/firebaseauth/onIdTokenChanged - Cookies Destroyed \n"
+        );
       } else {
         const { token } = await user.getIdTokenResult();
-        console.log("TOKEN", token);
+        destroyCookie(null, "token", { path: "/booking" });
+        destroyCookie(null, "token", { path: "/" });
+        setCookie(null, "token", token, { path: "/booking" });
+        console.log("/client/firebaseauth/onIdTokenChanged - Cookies Set \n");
         axiosAuth.post("/current-user", {}).then((res) => {
           dispatch({
             type: "LOGIN",
