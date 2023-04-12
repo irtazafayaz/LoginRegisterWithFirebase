@@ -11,7 +11,7 @@ import {
 } from "firebase/auth";
 import { toast } from "react-toastify";
 import { Button, Space } from "antd";
-import { GoogleOutlined } from "@ant-design/icons";
+import { GoogleOutlined, SyncOutlined } from "@ant-design/icons";
 
 const Login = () => {
   const router = useRouter();
@@ -20,23 +20,33 @@ const Login = () => {
   const [loginPassword, setLoginPassword] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const login = async () => {
+    setLoading(true);
     await signInWithEmailAndPassword(auth, loginEmail, loginPassword)
       .then((user) => {
-        console.log(user);
+        router.push("/");
       })
-      .catch((e) => toast.error(e.message));
+      .catch((e) => {
+        setLoading(false);
+        toast.error(e.message);
+      });
   };
   const register = async () => {
+    setLoading(true);
     await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
       .then((user) => {
-        console.log(user);
+        router.push("/");
       })
-      .catch((e) => toast.error(e.message));
+      .catch((e) => {
+        setLoading(false);
+        toast.error(e.message);
+      });
   };
 
   const onGoogleButtonTapped = async () => {
+    setLoading(true);
     const provider = new GoogleAuthProvider();
     await signInWithPopup(auth, provider)
       .then((result) => {
@@ -45,16 +55,17 @@ const Login = () => {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-        console.log("USER GOOGLE",user);
+        router.push("/");
       })
       .catch((e) => {
-        toast.error(e);
+        setLoading(false);
+        toast.error(e.message);
       });
   };
 
   return (
     <div className="container">
-      <h2 className="text-center pt-4 display-4">Login / Register</h2>
+      <h2 className="text-center pt-4 display-4"> {loading ? <SyncOutlined spin /> : "Login/Register" } </h2>
 
       <Button
         onClick={onGoogleButtonTapped}
