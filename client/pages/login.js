@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import LoginRegisterForm from "../components/LoginRegisterForm";
@@ -10,8 +9,9 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import { toast } from "react-toastify";
-import { Button, Space } from "antd";
+import { Button } from "antd";
 import { GoogleOutlined, SyncOutlined } from "@ant-design/icons";
+import Link from "next/link";
 
 const Login = () => {
   const router = useRouter();
@@ -65,7 +65,10 @@ const Login = () => {
 
   return (
     <div className="container">
-      <h2 className="text-center pt-4 display-4"> {loading ? <SyncOutlined spin /> : "Login/Register" } </h2>
+      <h2 className="text-center pt-4 display-4">
+        {" "}
+        {loading ? <SyncOutlined spin /> : "Login/Register"}{" "}
+      </h2>
 
       <Button
         onClick={onGoogleButtonTapped}
@@ -97,6 +100,10 @@ const Login = () => {
           handleSubmit={register}
         />
       </div>
+
+
+    <Link href="/reset-password" className = "btn btn-outline-danger btn-sm mt-5"> Reset Password </Link>
+
     </div>
   );
 };
